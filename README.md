@@ -17,7 +17,7 @@ notify:
     topic: <ntfy.sh_topic>
     icon: <notification_icon_url>
 ```
-Replace `<ntfy.sh_url>`, `<ntfy.sh_token>`, `<ntfy.sh_topic>`, and `<notification_icon_url>` with the url, optional token, optional topic, and optional icon url for your ntfy.sh instance. Token is optional if your instance does not require authentication. Topic is also optional and will default to `homeassistant` if not specified. Topics in the automations have higher priority.
+Replace `<ntfy.sh_url>`, `<ntfy.sh_token>`, `<ntfy.sh_topic>`, and `<notification_icon_url>` with the url, optional token, optional topic, and optional icon url for your ntfy.sh instance. Token is optional if your instance does not require authentication. Topic is also optional and will default to `homeassistant` if not specified. Topic and icon can be set in automations to override the values defined in the configuration.
 
 ### Usage
 This integration accepts the same values as the official ntfy.sh API. For a full list of options that can be added to a notification refer to the [ntfy.sh docs](https://docs.ntfy.sh/publish/#publish-as-json). Here a few examples:
@@ -30,15 +30,15 @@ action:
       message: "This is a test message."
 ```
 
-#### Message with title and priority
+#### Message with highest priority
 ```yaml
 action:
   - service: notify.my_ntfy
     data:
-      message: "This is a test message."
+      message: "This is a test message with the highest priority."
       title: "ntfy Test"
       data:
-        priority: 10
+        priority: 5
 ```
 
 #### Message with click event
@@ -46,43 +46,46 @@ action:
 action:
   - service: notify.my_ntfy
     data:
-      message: "This is a test message."
+      message: "This is a test message with a link that opens on click."
       title: "ntfy Test"
       data:
-        priority: 10
         click: https://www.home-assistant.io/
 ```
 
 ##### Message with image
 ```yaml
 action:
-  - service: notify.my_gotify
+  - service: notify.my_ntfy
     data:
-      message: "This is a test message."
-      title: "Gotify Test"
+      message: "This is a test message with an image."
+      title: "ntfy Test"
       data:
-        priority: 10
         image: https://placekitten.com/400/300
 ```
 
 ##### All available options
 ```yaml
 action:
-  - service: notify.my_gotify
+  - service: notify.my_ntfy
     data:
-      message: "This is a test message."
-      title: "Gotify Test"
+      message: "This is a test message with all available options set."
+      title: "ntfy Test"
       topic: "override_default_topic"
       data:
-        tags: [tags]
-        priority: 3
+        tags:
+          - skull
+        priority: 4
         attach: https://placekitten.com/400/300
         filename: filename.jpg
         click: https://www.home-assistant.io/
-        actions: [list_of_actions]
+        actions:
+          - action: view
+            label: Open Home Assistant Website
+            url: https://www.home-assistant.io/
+            clear: true
         icon: https://placekitten.com/400/300
         delay: 10s
-        markdown: True
+        markdown: true
         call: "+324793245"
         email: "support@home-assistant.io"
 ```
